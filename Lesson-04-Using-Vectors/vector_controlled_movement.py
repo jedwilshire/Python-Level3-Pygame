@@ -18,7 +18,10 @@ class Circle_Sprite(pygame.sprite.Sprite):
         self.acc = pygame.math.Vector2(0, 20)
         self.rect.center = self.pos
     
+    def check
+    
     def update(self):
+        self.check_keys()
         dt = self.game.dt
         self.vel += self.acc * dt
         self.pos += 0.5 * self.acc * dt ** 2 + self.vel * dt

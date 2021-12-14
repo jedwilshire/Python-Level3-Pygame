@@ -41,6 +41,15 @@ class Application:
             if event.type == pygame.QUIT:
                 self.running = False
             # additional inputs can be handled here.
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    print('up')
+                elif event.key == pygame.K_DOWN:
+                    print('down')
+                elif event.key == pygame.K_LEFT:
+                    print('left')
+                elif event.key == pygame.K_RIGHT:
+                    print('right')
                     
                     
 def main():
