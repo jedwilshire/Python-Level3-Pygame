@@ -1,25 +1,22 @@
 import pygame
-WIDTH = 600
+WIDTH = 800
 HEIGHT = 600
 BLUE = (0, 0, 255)
-WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 
 class Circle_Sprite(pygame.sprite.Sprite):
-    def __init__(self, app, x, y):
+    def __init__(self, x, y):
         super().__init__()
-        self.game = app
         self.image = pygame.Surface( (50, 50) )
         pygame.draw.circle(self.image, BLUE, (25, 25), 25)
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-        self.pos = pygame.math.Vector2(x, y)
-        self.vel = pygame.math.Vector2(0, 0)
-        self.acc = pygame.math.Vector2(0, 0)
-        self.rect.center = self.pos
-    
-    def check_keys(self):
-        self.acc = pygame.math.Vector2(0, 0)
+        self.rect.x = x
+        self.rect.y = y
+    def update(self):
+        # keys will be a dictionary of key : bool.
+        # for example if up is pressed then keys[pygame.K_UP] will evaluate to True
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
             self.rect.y -= 1
@@ -29,30 +26,22 @@ class Circle_Sprite(pygame.sprite.Sprite):
             self.rect.x -= 1
         if keys[pygame.K_RIGHT]:
             self.rect.x += 1
-    
-    def update(self):
-        self.check_keys()
-        dt = self.game.dt
-        self.vel += self.acc * dt
-        self.pos += 0.5 * self.acc * dt ** 2 + self.vel * dt
-        self.rect.center = self.pos
 
 class Application:
     def __init__(self):
         self.screen = pygame.display.set_mode( (WIDTH, HEIGHT) )
         self.sprites = pygame.sprite.Group()
-        circle = Circle_Sprite(self, 100, 200)
-        self.sprites.add(circle)
+        self.sprite1 = Circle_Sprite(100, 200)
+        self.sprites.add(self.sprite1)
         self.running = True
-        self.clock = pygame.time.Clock()
-        
+        # set key mode so that held down key triggers a repeated keydown event ever 15 milliseconds
+        pygame.key.set_repeat(15)
+    
     def gameloop(self):
-        self.dt = self.clock.tick(60) / 1000
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-            # flip the display
             self.screen.fill(WHITE)
             self.sprites.update()
             self.sprites.draw(self.screen)
