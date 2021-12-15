@@ -21,9 +21,12 @@ class Circle_Sprite(pygame.sprite.Sprite):
         self.rect.center = self.pos
     
     def update(self):
+        friction_coef = 0.2
         self.check_keys()
         dt = self.game.dt
         self.vel += self.acc * dt
+        self.friction = self.vel * friction_coef * dt
+        self.vel -= self.friction
         self.pos += 0.5 * self.acc * dt ** 2 + self.vel * dt
         self.rect.center = self.pos
 
